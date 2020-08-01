@@ -60,3 +60,24 @@
                                   :run "npm start"
                                   :test-suffix ".test")
 
+(defconst my-graphql/proj-path "~/scratches/graphql")
+(defconst my-graphql/config-path (concat (file-name-as-directory my-graphql/proj-path) ".graphqlconfig"))
+
+(defun my-graphqul/copy-token ()
+  "If current buffer contains token syntax. Put token into file at `my-graphql/config-path'."
+  (interactive)
+  (let ((token
+         (string-trim
+          (with-output-to-string
+            (goto-char (point-min))
+            (save-excursion
+              (re-search-forward "\"id_token\": \\(\".*\"\\)" nil t)
+                  (princ (match-string-no-properties 1)))))))
+    (with-temp-file
+        my-graphql/config-path
+      (insert-file-contents my-graphql/config-path)
+      (when
+      (re-search-forward "\"Authorization\":.*" nil t)
+        (replace-match (concat  "\"Authorization\":" " " token))))))
+
+;;(add-hook! 'restclient-response-received-hook #'my-graphqul/copy-token)

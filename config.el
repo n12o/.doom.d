@@ -51,3 +51,12 @@
 ;;
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
+;;
+;;
+(after! projectile-mode projectile-register-project-type 'graphql'(".graphqlconfig")
+                                  :project-file ".graphqlconfig"
+                                  :compile "npm install"
+                                  :test "npm test"
+                                  :run "npm start"
+                                  :test-suffix ".test")
+
